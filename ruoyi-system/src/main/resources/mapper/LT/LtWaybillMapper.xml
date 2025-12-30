@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.waybill.mapper.LtWaybillMapper">
+    
+    <resultMap type="LtWaybill" id="LtWaybillResult">
+        <result property="id"    column="id"    />
+        <result property="waybillNo"    column="waybill_no"    />
+        <result property="shipperId"    column="shipper_id"    />
+        <result property="dispatcherId"    column="dispatcher_id"    />
+        <result property="driverId"    column="driver_id"    />
+        <result property="vehicleId"    column="vehicle_id"    />
+        <result property="cargoInfo"    column="cargo_info"    />
+        <result property="weight"    column="weight"    />
+        <result property="volume"    column="volume"    />
+        <result property="senderName"    column="sender_name"    />
+        <result property="senderPhone"    column="sender_phone"    />
+        <result property="senderAddress"    column="sender_address"    />
+        <result property="receiverName"    column="receiver_name"    />
+        <result property="receiverPhone"    column="receiver_phone"    />
+        <result property="receiverAddress"    column="receiver_address"    />
+        <result property="expectedTime"    column="expected_time"    />
+        <result property="pickupTime"    column="pickup_time"    />
+        <result property="finishTime"    column="finish_time"    />
+        <result property="status"    column="status"    />
+        <result property="fee"    column="fee"    />
+        <result property="paid"    column="paid"    />
+        <result property="payTime"    column="pay_time"    />
+        <result property="receiptPath"    column="receipt_path"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectLtWaybillVo">
+        select id, waybill_no, shipper_id, dispatcher_id, driver_id, vehicle_id, cargo_info, weight, volume, sender_name, sender_phone, sender_address, receiver_name, receiver_phone, receiver_address, expected_time, pickup_time, finish_time, status, fee, paid, pay_time, receipt_path, create_time, update_time from LT_waybill
+    </sql>
+
+    <select id="selectLtWaybillList" parameterType="LtWaybill" resultMap="LtWaybillResult">
+        <include refid="selectLtWaybillVo"/>
+        <where>  
+            <if test="waybillNo != null  and waybillNo != ''"> and waybill_no = #{waybillNo}</if>
+            <if test="shipperId != null "> and shipper_id = #{shipperId}</if>
+            <if test="dispatcherId != null "> and dispatcher_id = #{dispatcherId}</if>
+            <if test="driverId != null "> and driver_id = #{driverId}</if>
+            <if test="vehicleId != null "> and vehicle_id = #{vehicleId}</if>
+            <if test="cargoInfo != null  and cargoInfo != ''"> and cargo_info = #{cargoInfo}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+            <if test="volume != null "> and volume = #{volume}</if>
+            <if test="senderName != null  and senderName != ''"> and sender_name like concat('%', #{senderName}, '%')</if>
+            <if test="senderPhone != null  and senderPhone != ''"> and sender_phone = #{senderPhone}</if>
+            <if test="senderAddress != null  and senderAddress != ''"> and sender_address = #{senderAddress}</if>
+            <if test="receiverName != null  and receiverName != ''"> and receiver_name like concat('%', #{receiverName}, '%')</if>
+            <if test="receiverPhone != null  and receiverPhone != ''"> and receiver_phone = #{receiverPhone}</if>
+            <if test="receiverAddress != null  and receiverAddress != ''"> and receiver_address = #{receiverAddress}</if>
+            <if test="expectedTime != null "> and expected_time = #{expectedTime}</if>
+            <if test="pickupTime != null "> and pickup_time = #{pickupTime}</if>
+            <if test="finishTime != null "> and finish_time = #{finishTime}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="fee != null "> and fee = #{fee}</if>
+            <if test="paid != null "> and paid = #{paid}</if>
+            <if test="payTime != null "> and pay_time = #{payTime}</if>
+            <if test="receiptPath != null  and receiptPath != ''"> and receipt_path = #{receiptPath}</if>
+        </where>
+    </select>
+    
+    <select id="selectLtWaybillById" parameterType="Long" resultMap="LtWaybillResult">
+        <include refid="selectLtWaybillVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertLtWaybill" parameterType="LtWaybill" useGeneratedKeys="true" keyProperty="id">
+        insert into LT_waybill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="waybillNo != null and waybillNo != ''">waybill_no,</if>
+            <if test="shipperId != null">shipper_id,</if>
+            <if test="dispatcherId != null">dispatcher_id,</if>
+            <if test="driverId != null">driver_id,</if>
+            <if test="vehicleId != null">vehicle_id,</if>
+            <if test="cargoInfo != null">cargo_info,</if>
+            <if test="weight != null">weight,</if>
+            <if test="volume != null">volume,</if>
+            <if test="senderName != null">sender_name,</if>
+            <if test="senderPhone != null">sender_phone,</if>
+            <if test="senderAddress != null">sender_address,</if>
+            <if test="receiverName != null">receiver_name,</if>
+            <if test="receiverPhone != null">receiver_phone,</if>
+            <if test="receiverAddress != null">receiver_address,</if>
+            <if test="expectedTime != null">expected_time,</if>
+            <if test="pickupTime != null">pickup_time,</if>
+            <if test="finishTime != null">finish_time,</if>
+            <if test="status != null">status,</if>
+            <if test="fee != null">fee,</if>
+            <if test="paid != null">paid,</if>
+            <if test="payTime != null">pay_time,</if>
+            <if test="receiptPath != null">receipt_path,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="waybillNo != null and waybillNo != ''">#{waybillNo},</if>
+            <if test="shipperId != null">#{shipperId},</if>
+            <if test="dispatcherId != null">#{dispatcherId},</if>
+            <if test="driverId != null">#{driverId},</if>
+            <if test="vehicleId != null">#{vehicleId},</if>
+            <if test="cargoInfo != null">#{cargoInfo},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="volume != null">#{volume},</if>
+            <if test="senderName != null">#{senderName},</if>
+            <if test="senderPhone != null">#{senderPhone},</if>
+            <if test="senderAddress != null">#{senderAddress},</if>
+            <if test="receiverName != null">#{receiverName},</if>
+            <if test="receiverPhone != null">#{receiverPhone},</if>
+            <if test="receiverAddress != null">#{receiverAddress},</if>
+            <if test="expectedTime != null">#{expectedTime},</if>
+            <if test="pickupTime != null">#{pickupTime},</if>
+            <if test="finishTime != null">#{finishTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="fee != null">#{fee},</if>
+            <if test="paid != null">#{paid},</if>
+            <if test="payTime != null">#{payTime},</if>
+            <if test="receiptPath != null">#{receiptPath},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLtWaybill" parameterType="LtWaybill">
+        update LT_waybill
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="waybillNo != null and waybillNo != ''">waybill_no = #{waybillNo},</if>
+            <if test="shipperId != null">shipper_id = #{shipperId},</if>
+            <if test="dispatcherId != null">dispatcher_id = #{dispatcherId},</if>
+            <if test="driverId != null">driver_id = #{driverId},</if>
+            <if test="vehicleId != null">vehicle_id = #{vehicleId},</if>
+            <if test="cargoInfo != null">cargo_info = #{cargoInfo},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="volume != null">volume = #{volume},</if>
+            <if test="senderName != null">sender_name = #{senderName},</if>
+            <if test="senderPhone != null">sender_phone = #{senderPhone},</if>
+            <if test="senderAddress != null">sender_address = #{senderAddress},</if>
+            <if test="receiverName != null">receiver_name = #{receiverName},</if>
+            <if test="receiverPhone != null">receiver_phone = #{receiverPhone},</if>
+            <if test="receiverAddress != null">receiver_address = #{receiverAddress},</if>
+            <if test="expectedTime != null">expected_time = #{expectedTime},</if>
+            <if test="pickupTime != null">pickup_time = #{pickupTime},</if>
+            <if test="finishTime != null">finish_time = #{finishTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="fee != null">fee = #{fee},</if>
+            <if test="paid != null">paid = #{paid},</if>
+            <if test="payTime != null">pay_time = #{payTime},</if>
+            <if test="receiptPath != null">receipt_path = #{receiptPath},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLtWaybillById" parameterType="Long">
+        delete from LT_waybill where id = #{id}
+    </delete>
+
+    <delete id="deleteLtWaybillByIds" parameterType="String">
+        delete from LT_waybill where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

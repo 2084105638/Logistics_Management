@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.operation.mapper.LtOperationLogMapper">
+    
+    <resultMap type="LtOperationLog" id="LtOperationLogResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="operation"    column="operation"    />
+        <result property="method"    column="method"    />
+        <result property="ip"    column="ip"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectLtOperationLogVo">
+        select id, user_id, operation, method, ip, create_time from LT_operation_log
+    </sql>
+
+    <select id="selectLtOperationLogList" parameterType="LtOperationLog" resultMap="LtOperationLogResult">
+        <include refid="selectLtOperationLogVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="operation != null  and operation != ''"> and operation = #{operation}</if>
+            <if test="method != null  and method != ''"> and method = #{method}</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+        </where>
+    </select>
+    
+    <select id="selectLtOperationLogById" parameterType="Long" resultMap="LtOperationLogResult">
+        <include refid="selectLtOperationLogVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertLtOperationLog" parameterType="LtOperationLog" useGeneratedKeys="true" keyProperty="id">
+        insert into LT_operation_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="operation != null">operation,</if>
+            <if test="method != null">method,</if>
+            <if test="ip != null">ip,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="operation != null">#{operation},</if>
+            <if test="method != null">#{method},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLtOperationLog" parameterType="LtOperationLog">
+        update LT_operation_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="operation != null">operation = #{operation},</if>
+            <if test="method != null">method = #{method},</if>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLtOperationLogById" parameterType="Long">
+        delete from LT_operation_log where id = #{id}
+    </delete>
+
+    <delete id="deleteLtOperationLogByIds" parameterType="String">
+        delete from LT_operation_log where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

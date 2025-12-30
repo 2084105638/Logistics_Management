@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.vehicle.mapper.LtVehicleMapper">
+    
+    <resultMap type="LtVehicle" id="LtVehicleResult">
+        <result property="id"    column="id"    />
+        <result property="licensePlate"    column="license_plate"    />
+        <result property="model"    column="model"    />
+        <result property="capacity"    column="capacity"    />
+        <result property="volume"    column="volume"    />
+        <result property="state"    column="state"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectLtVehicleVo">
+        select id, license_plate, model, capacity, volume, state, create_time, update_time from LT_vehicle
+    </sql>
+
+    <select id="selectLtVehicleList" parameterType="LtVehicle" resultMap="LtVehicleResult">
+        <include refid="selectLtVehicleVo"/>
+        <where>  
+            <if test="licensePlate != null  and licensePlate != ''"> and license_plate = #{licensePlate}</if>
+            <if test="model != null  and model != ''"> and model = #{model}</if>
+            <if test="capacity != null "> and capacity = #{capacity}</if>
+            <if test="volume != null "> and volume = #{volume}</if>
+            <if test="state != null "> and state = #{state}</if>
+        </where>
+    </select>
+    
+    <select id="selectLtVehicleById" parameterType="Long" resultMap="LtVehicleResult">
+        <include refid="selectLtVehicleVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertLtVehicle" parameterType="LtVehicle" useGeneratedKeys="true" keyProperty="id">
+        insert into LT_vehicle
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="licensePlate != null and licensePlate != ''">license_plate,</if>
+            <if test="model != null">model,</if>
+            <if test="capacity != null">capacity,</if>
+            <if test="volume != null">volume,</if>
+            <if test="state != null">state,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="licensePlate != null and licensePlate != ''">#{licensePlate},</if>
+            <if test="model != null">#{model},</if>
+            <if test="capacity != null">#{capacity},</if>
+            <if test="volume != null">#{volume},</if>
+            <if test="state != null">#{state},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLtVehicle" parameterType="LtVehicle">
+        update LT_vehicle
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="licensePlate != null and licensePlate != ''">license_plate = #{licensePlate},</if>
+            <if test="model != null">model = #{model},</if>
+            <if test="capacity != null">capacity = #{capacity},</if>
+            <if test="volume != null">volume = #{volume},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLtVehicleById" parameterType="Long">
+        delete from LT_vehicle where id = #{id}
+    </delete>
+
+    <delete id="deleteLtVehicleByIds" parameterType="String">
+        delete from LT_vehicle where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

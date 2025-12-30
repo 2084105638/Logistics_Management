@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.event.mapper.LtExceptionEventMapper">
+    
+    <resultMap type="LtExceptionEvent" id="LtExceptionEventResult">
+        <result property="id"    column="id"    />
+        <result property="waybillId"    column="waybill_id"    />
+        <result property="driverId"    column="driver_id"    />
+        <result property="eventType"    column="event_type"    />
+        <result property="description"    column="description"    />
+        <result property="status"    column="status"    />
+        <result property="reportTime"    column="report_time"    />
+        <result property="handledTime"    column="handled_time"    />
+        <result property="handlerId"    column="handler_id"    />
+    </resultMap>
+
+    <sql id="selectLtExceptionEventVo">
+        select id, waybill_id, driver_id, event_type, description, status, report_time, handled_time, handler_id from LT_exception_event
+    </sql>
+
+    <select id="selectLtExceptionEventList" parameterType="LtExceptionEvent" resultMap="LtExceptionEventResult">
+        <include refid="selectLtExceptionEventVo"/>
+        <where>  
+            <if test="waybillId != null "> and waybill_id = #{waybillId}</if>
+            <if test="driverId != null "> and driver_id = #{driverId}</if>
+            <if test="eventType != null  and eventType != ''"> and event_type = #{eventType}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="reportTime != null "> and report_time = #{reportTime}</if>
+            <if test="handledTime != null "> and handled_time = #{handledTime}</if>
+            <if test="handlerId != null "> and handler_id = #{handlerId}</if>
+        </where>
+    </select>
+    
+    <select id="selectLtExceptionEventById" parameterType="Long" resultMap="LtExceptionEventResult">
+        <include refid="selectLtExceptionEventVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertLtExceptionEvent" parameterType="LtExceptionEvent" useGeneratedKeys="true" keyProperty="id">
+        insert into LT_exception_event
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="waybillId != null">waybill_id,</if>
+            <if test="driverId != null">driver_id,</if>
+            <if test="eventType != null">event_type,</if>
+            <if test="description != null">description,</if>
+            <if test="status != null">status,</if>
+            <if test="reportTime != null">report_time,</if>
+            <if test="handledTime != null">handled_time,</if>
+            <if test="handlerId != null">handler_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="waybillId != null">#{waybillId},</if>
+            <if test="driverId != null">#{driverId},</if>
+            <if test="eventType != null">#{eventType},</if>
+            <if test="description != null">#{description},</if>
+            <if test="status != null">#{status},</if>
+            <if test="reportTime != null">#{reportTime},</if>
+            <if test="handledTime != null">#{handledTime},</if>
+            <if test="handlerId != null">#{handlerId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLtExceptionEvent" parameterType="LtExceptionEvent">
+        update LT_exception_event
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="waybillId != null">waybill_id = #{waybillId},</if>
+            <if test="driverId != null">driver_id = #{driverId},</if>
+            <if test="eventType != null">event_type = #{eventType},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="reportTime != null">report_time = #{reportTime},</if>
+            <if test="handledTime != null">handled_time = #{handledTime},</if>
+            <if test="handlerId != null">handler_id = #{handlerId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLtExceptionEventById" parameterType="Long">
+        delete from LT_exception_event where id = #{id}
+    </delete>
+
+    <delete id="deleteLtExceptionEventByIds" parameterType="String">
+        delete from LT_exception_event where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
